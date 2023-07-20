@@ -26,6 +26,31 @@ const calendar = () => {
   dateButton.style.display = "none";
 };
 
+const rem = (taskId) => {
+  lista_taskova.forEach((task, index) => {
+    task.taskId == taskId ? lista_taskova.splice(index, 1) : false;
+  });
+  pravi();
+};
+
+const change = (taskName,taskId) => {
+  console.log("Usao");
+  const h_edit = document.createElement("input");
+  h_edit.setAttribute("type", "text");
+  h_edit.setAttribute("value", taskName);
+  // h_edit.innerHTML = "Nije Upisano";
+  document.getElementById(taskId).appendChild(h_edit)
+  h_edit.style.display = "block";
+  console.log(h_edit.value);
+  // console.log(eve
+  h_edit.addEventListener("dblclick", () => {
+    //Prodji kroz listu taskova i promeni elementu TaskId TaskName
+    taskName = h_edit.value;
+    console.log(taskName);
+    pravi()
+  });
+};
+
 const pravi = () => {
   const task_container = document.getElementById("task_container");
 
@@ -49,17 +74,27 @@ const pravi = () => {
     const date = new Date(task.taskDate);
     const month = date.getMonth();
     const day = date.getDate();
-    console.log(task.taskDate, task.taskName, task.taskId);
+    console.log(date.toLocaleDateString("en-US"), task.taskName, task.taskId);
 
     const task_element = document.createElement("div");
+    task_element.setAttribute("id", task.taskId);
+
     const h = document.createElement("h2");
     h.innerHTML = task.taskName;
+    h.addEventListener("dblclick", () => {
+      h.style.display = "none";
+      change(task.taskName, task.taskId);
+    });
 
-    const date_div = document.createElement("div");
-    // date_div.setAttribute("id", task.taskId);
-    date_div.setAttribute("id", "rem");
+    const date_div = document.createElement("button");
+    date_div.addEventListener("click", () => {
+      rem(task.taskId);
+    });
+    date_div.setAttribute("class", "rem");
+
     const p_month = document.createElement("p");
     p_month.innerHTML = month_list[month];
+
     const p_day = document.createElement("p");
     p_day.innerHTML = day;
 
@@ -81,16 +116,9 @@ const add = () => {
   document.getElementById("text").value = "";
   datePicker.style.display = "none";
   dateButton.style.display = "block";
+
   pravi();
 };
-
-// const remButton = document.getElementById("rem")
-
-// remButton.addEventListener("click", rem);
-
-// const rem = () => {
-//   lista_taskova.splice();
-// };
 
 pravi();
 
