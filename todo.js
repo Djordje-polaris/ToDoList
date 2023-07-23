@@ -33,21 +33,22 @@ const rem = (taskId) => {
   pravi();
 };
 
-const change = (taskName,taskId) => {
+const change = (taskName, taskId) => {
   console.log("Usao");
+  const task_element = document.getElementById(taskId);
+  const task_header = task_element.querySelector(".task_header");
+  const task_name = task_element.querySelector(".task_name");
   const h_edit = document.createElement("input");
   h_edit.setAttribute("type", "text");
   h_edit.setAttribute("value", taskName);
-  // h_edit.innerHTML = "Nije Upisano";
-  document.getElementById(taskId).appendChild(h_edit)
+  task_header.appendChild(h_edit);
   h_edit.style.display = "block";
-  console.log(h_edit.value);
-  // console.log(eve
   h_edit.addEventListener("dblclick", () => {
-    //Prodji kroz listu taskova i promeni elementu TaskId TaskName
-    taskName = h_edit.value;
+    lista_taskova.forEach((task, index) => {
+      task.taskId == taskId ? (task.taskName = h_edit.value) : false;
+    });
     console.log(taskName);
-    pravi()
+    pravi();
   });
 };
 
@@ -79,7 +80,11 @@ const pravi = () => {
     const task_element = document.createElement("div");
     task_element.setAttribute("id", task.taskId);
 
+    const task_header = document.createElement("div");
+    task_header.setAttribute("class", "task_header");
+
     const h = document.createElement("h2");
+    h.setAttribute("class", "task_name");
     h.innerHTML = task.taskName;
     h.addEventListener("dblclick", () => {
       h.style.display = "none";
@@ -100,8 +105,10 @@ const pravi = () => {
 
     date_div.appendChild(p_month);
     date_div.appendChild(p_day);
-    task_element.appendChild(h);
+    task_header.appendChild(h);
+    task_element.appendChild(task_header);
     task_element.appendChild(date_div);
+
     task_container.appendChild(task_element);
   });
 };
