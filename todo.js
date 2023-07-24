@@ -48,7 +48,6 @@ const rem = (taskId) => {
 };
 
 const change = (taskName, taskId) => {
-  console.log("Usao");
   const task_element = document.getElementById(taskId);
   const task_header = task_element.querySelector(".task_header");
   const h_edit = document.createElement("input");
@@ -61,31 +60,29 @@ const change = (taskName, taskId) => {
     lista_taskova.forEach((task) => {
       task.taskId == taskId ? (task.taskName = h_edit.value) : false;
     });
-    console.log(taskName);
     update();
   });
 };
 
 const update = () => {
-  
   localStorage.setItem("lista_taskova", JSON.stringify(lista_taskova));
   const task_container = document.getElementById("task_container");
-  
+
   task_container.innerHTML = "";
-  
+
   lista_taskova.forEach((task) => {
     const date = new Date(task.taskDate);
     const month = date.getMonth();
     const day = date.getDate();
     console.log(date.toLocaleDateString("en-US"), task.taskName, task.taskId);
-    
+
     const task_element = document.createElement("div");
     task_element.setAttribute("id", task.taskId);
     task_element.setAttribute("class", "task");
-    
+
     const task_header = document.createElement("div");
     task_header.setAttribute("class", "task_header");
-    
+
     const h = document.createElement("h2");
     h.setAttribute("class", "task_name");
     h.innerHTML = task.taskName;
@@ -93,25 +90,25 @@ const update = () => {
       h.style.display = "none";
       change(task.taskName, task.taskId);
     });
-    
+
     const date_div = document.createElement("button");
     date_div.addEventListener("click", () => {
       rem(task.taskId);
     });
     date_div.setAttribute("class", "rem");
-    
+
     const p_month = document.createElement("p");
     p_month.innerHTML = month_list[month];
-    
+
     const p_day = document.createElement("p");
     p_day.innerHTML = day;
-    
+
     date_div.appendChild(p_month);
     date_div.appendChild(p_day);
     task_header.appendChild(h);
     task_element.appendChild(task_header);
     task_element.appendChild(date_div);
-    
+
     task_container.appendChild(task_element);
   });
 };
@@ -122,31 +119,26 @@ const add = () => {
     taskDate: document.getElementById("date_picker").value,
     taskId: Math.floor(Math.random() * 100000) + 1,
   };
-  
+
   if (
     task.taskDate instanceof Date ||
     !isNaN(task.taskDate) ||
     task.taskName === ""
-    ) {
-      alert("Niste dobro uneli informacije, molim Vas unesite ponovo");
-    } else {
-      console.log(task.taskDate instanceof Date && !isNaN(task.taskDate));
-      console.log(task.taskDate instanceof Date);
-      console.log(!isNaN(task.taskDate));
-      
-      lista_taskova.push(task);
-      document.getElementById("text").value = "";
-      document.getElementById("date_picker").style.display = "none";
-      document.getElementById("date_picker").value = "";
-      dateButton.style.display = "block";
-      
-      update();
-    }
-  };
+  ) {
+    alert("Niste dobro uneli informacije, molim Vas unesite ponovo");
+  } else {
+    lista_taskova.push(task);
+    document.getElementById("text").value = "";
+    document.getElementById("date_picker").style.display = "none";
+    document.getElementById("date_picker").value = "";
+    dateButton.style.display = "block";
 
-  lista_taskova = JSON.parse(localStorage.getItem("lista_taskova"));
-  update();
-  
-  addButton.addEventListener("click", add);
-  dateButton.addEventListener("click", calendar);
-  
+    update();
+  }
+};
+
+lista_taskova = JSON.parse(localStorage.getItem("lista_taskova"));
+update();
+
+addButton.addEventListener("click", add);
+dateButton.addEventListener("click", calendar);
